@@ -2,8 +2,8 @@
 pragma solidity ^0.8.30;
 
 contract MyToken {
-    string public name = "MyToken";
-    string public symbol = "MTK";
+    string public name = "Basilisk";
+    string public symbol = "BSK";
     uint256 public totalSupply = 1000;  // Total supply of tokens
 
     mapping(address => uint256) public balances;
