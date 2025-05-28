@@ -1,24 +1,34 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.30;
 
 contract MyToken {
-string public name = "Basilisk";
-string public symbol = "BSK";
-uint public totalprovided = 1000;
+    string public name = "MyToken";
+    string public symbol = "MTK";
+    uint256 public totalSupply = 1000;  // Total supply of tokens
 
-mapping(address => uint) public balances;
+    mapping(address => uint256) public balances;
 
-constructor() {
-    balances[msg.sender] = totalprovided;
-}
+    // Evento para logar transferências
+    event Transfer(address indexed from, address indexed to, uint256 value);
 
-function transfer(address _to, uint _amount) public {
-    require(balances[msg.sender] >= _amount, "Saldo insuficiente");
-    balances[msg.sender] -= _amount;
-    balances[_to] += _amount;
-}
+    constructor() {
+        // Inicializa o saldo do (usuario) criador com o total de tokens
+        balances[msg.sender] = totalSupply;
+    }
 
-function balanceOf(address _account) public view returns (uint) {
-    return balances[_account];
-}
+    // Função para transferir tokens para outro endereço
+    function transfer(address _to, uint256 _amount) public {
+        require(_to != address(0), "Invalid address");
+        require(balances[msg.sender] >= _amount, "Insufficient balance");
+
+        balances[msg.sender] -= _amount;
+        balances[_to] += _amount;
+
+        emit Transfer(msg.sender, _to, _amount);
+    }
+
+    // Retorna o saldo de um endereço
+    function balanceOf(address _account) public view returns (uint256) {
+        return balances[_account];
+    }
 }
